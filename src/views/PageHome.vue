@@ -7,6 +7,7 @@
       <img class="product" src="../assets/myodam2.jpg">
       <img class="product" src="../assets/myodam3.jpg">
       <h4>낄낄낄길낄</h4>
+      <h4>낄낄낄길낄</h4>
     </div>
   </template>
   
