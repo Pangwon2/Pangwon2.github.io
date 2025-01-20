@@ -8,6 +8,7 @@ const store = createStore({
     user: null,
     isAdmin: false,
     comment: comment,
+    basket: [],
   },
   mutations: {
     // 로그인 상태와 사용자 정보를 업데이트하는 뮤테이션
@@ -25,6 +26,9 @@ const store = createStore({
         const newNo = state.comment.length + 1;
         newComment.no = newNo;
         state.comment.push(newComment);
+    },
+    addBasket(state, product) {
+      state.basket.push(product);
     },
   },
   actions: {
@@ -45,12 +49,16 @@ const store = createStore({
     addNewComment({ commit }, newComment) {
         commit('addComment', newComment);
     },
+    product({ commit }, product) {
+      commit('addBasket', product);
+    },
   },
   getters: {
     isAuthenticated: (state) => state.isAuthenticated,
     user: (state) => state.user,
     isAdmin: (state) => state.isAdmin,
     comment: state => state.comment,
+    basket: state => state.basket,
   }
 });
 

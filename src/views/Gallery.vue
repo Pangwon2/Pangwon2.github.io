@@ -24,7 +24,7 @@
             },
             goToDetail(id) {
                 console.log(id);
-                this.$router.push(`/board/detail/${id}`)
+                this.$router.push(`/gallery/detail/${id}`)
             }
         },
     };
