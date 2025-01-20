@@ -29,7 +29,12 @@
             <router-link to="/orDerDetail">Order List</router-link>
           </div>
         </li>
-      
+      <div class="container">
+        <router-link to="/basket">
+          <div class="basket">
+            장바구니
+          </div>
+        </router-link>
       <router-link to="/signIn">
         <div class="signIn" v-if="!isAuthenticated">
           로그인
@@ -40,6 +45,7 @@
         <p v-else>안녕하세요, {{ user }}님!</p>
         <button class="logOut" @click="logout">로그아웃</button>
       </div>
+    </div>
     </ul>
     </nav>
   </header>
@@ -95,8 +101,7 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
 #nav-bar {
   background-color: rgb(248, 252, 255);
   border-bottom: 1px solid rgb(219, 224, 255);
@@ -197,14 +202,20 @@ export default {
   }
 }
 
-.signIn{
-  text-align: right;
+.container {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: flex-start;   /* 위쪽 정렬 */
+}
+
+.basket {
+  order: -1; /* 장바구니가 먼저 나오게 함 */
+  margin-top: 20px;
   margin-right: 20px;
 }
 
-.user{
-  text-align: right;
-  margin-right: 20px;
+.signIn {
+  margin-top: 20px;
 }
 
 
@@ -226,6 +237,11 @@ export default {
 .signIn{
   float: right;
   margin-top: 20px;
+}
+.basket{
+  float: right;
+  margin-top: 20px;
+  order: -1;
 }
 .user {
   float: right;
