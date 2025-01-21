@@ -57,7 +57,7 @@ const store = createStore({
     isAuthenticated: (state) => state.isAuthenticated,
     user: (state) => state.user,
     isAdmin: (state) => state.isAdmin,
-    comment: state => state.comment,
+    comment: (state) => state.comment.slice().reverse(),
     basket: state => state.basket,
   }
 });

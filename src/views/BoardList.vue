@@ -27,7 +27,7 @@
         </div>
         <div class="search">
             <span>성함 :</span> &nbsp;
-            <input v-model="searchQuery" placeholder="성함을 입력하세요" class="search text"/>
+            <input v-model="searchQuery" class="searchText"/>
             <button class="finding" @click="searchPosts">검색</button>
         </div>
     </div>
@@ -114,18 +114,9 @@
         flex-grow: 1;             /* 이 영역이 나머지 공간을 차지하도록 설정 */
     }
     .search {
-        margin-top: 10px;
         display: flex;            /* flexbox로 정렬 */
         align-items: center;      /* 아이템들을 세로로 정렬 */
     }
-
-    .text {
-        height: 20px;             /* 입력창 높이 설정 */
-    }
-    .finding {
-        height: 20px;
-    }
-
     .registerA {
         margin-left: auto;     /* 버튼을 오른쪽 끝으로 정렬 */
         margin-bottom: 10px;          /* 버튼과 테이블 사이에 간격 추가 */

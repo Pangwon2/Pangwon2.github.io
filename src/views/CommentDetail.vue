@@ -17,10 +17,8 @@
   export default {
     computed: {
       comment() {
-        const comment = this.$store.getters.comment;
-        console.log(comment);
-        return comment;
-        }
+        return this.$store.getters.comment;
+      },
     },
     data() {
       return {
@@ -33,7 +31,6 @@
     },
     mounted() {
       this.updateIds();  // 컴포넌트가 처음 로드될 때 nextId, preId 초기화
-      console.log(this.comment);
     },
     methods : {
       reTurn() {

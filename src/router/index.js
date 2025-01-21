@@ -16,6 +16,7 @@ import Comment from '@/views/Comment.vue'
 import CommentDetail from '@/views/CommentDetail.vue'
 import RegisterC from '@/components/RegisterC.vue'
 import Basket from '@/views/Basket.vue'
+import GalleryInfinity from '@/views/GalleryInfinity.vue'
 
 const routes = [
   {
@@ -110,6 +111,11 @@ const routes = [
     path: '/basket',
     name: 'Basket',
     component: Basket,
+  },
+  {
+    path: '/galleryInfinity',
+    name: 'GalleryInfinity',
+    component: GalleryInfinity,
   },
 ]
 

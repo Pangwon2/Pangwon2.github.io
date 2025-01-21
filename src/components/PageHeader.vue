@@ -7,13 +7,19 @@
         <div></div>
       </div>
       <ul id="nav-menu">
-        <router-link to="/">
+        <router-link to="/" @click="closeAllMenus">
           <img class="logo" src="../assets/logo_head.jpg" alt="Logo">
         </router-link>
-        <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/gallery">Gallery</router-link></li>
-        <li><router-link to="/about">About Us</router-link></li>
-        <li><router-link to="/board/list">Product List</router-link></li>
+        <li><router-link to="/" @click="closeAllMenus">Home</router-link></li>
+        <li class="galleryDrop" @click="galleryDrop">
+          <a href="#" class="galleryDrop">gallery</a>
+          <div v-show="galleryVisible" class="gallery-content" id="gallery-content">
+            <router-link to="/gallery">Gallery</router-link>
+            <router-link to="/galleryInfinity">무한스크롤</router-link>
+          </div>
+        </li>
+        <li><router-link to="/about" @click="closeAllMenus">About Us</router-link></li>
+        <li><router-link to="/board/list" @click="closeAllMenus">Product List</router-link></li>
         <li class="serviceDrop" @click="serviceDrop">
           <a href="#" class="serviceDrop">service</a>
           <div v-show="serviceVisible" class="service-content" id="service-content">
@@ -30,12 +36,12 @@
           </div>
         </li>
       <div class="container">
-        <router-link to="/basket">
+        <router-link to="/basket" @click="closeAllMenus">
           <div class="basket">
             장바구니
           </div>
         </router-link>
-      <router-link to="/signIn">
+      <router-link to="/signIn" @click="closeAllMenus">
         <div class="signIn" v-if="!isAuthenticated">
           로그인
         </div>
@@ -58,6 +64,7 @@ export default {
     return {
       dropdownVisible: false,
       serviceVisible: false,
+      galleryVisible: false,
     };
   },
   computed: {
@@ -88,14 +95,29 @@ export default {
     dropdown() {
       // Vue에서 상태를 변경하여 드롭다운 표시 상태를 제어
       this.dropdownVisible = !this.dropdownVisible;
+      this.serviceVisible = false;
+      this.galleryVisible = false;
     },
     serviceDrop() {
       // Vue에서 상태를 변경하여 드롭다운 표시 상태를 제어
       this.serviceVisible = !this.serviceVisible;
+      this.dropdownVisible = false;
+      this.galleryVisible = false;
+    },
+    galleryDrop() {
+      // Vue에서 상태를 변경하여 드롭다운 표시 상태를 제어
+      this.galleryVisible = !this.galleryVisible;
+      this.dropdownVisible = false;
+      this.serviceVisible = false;
     },
     logout() {
       this.$store.dispatch('logout');
       this.$router.push('/');
+    },
+    closeAllMenus() {
+      this.dropdownVisible = false;
+      this.serviceVisible = false;
+      this.galleryVisible = false;
     },
   },
 };
@@ -228,6 +250,13 @@ export default {
   z-index: 1000;
 }
 .service-content {
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0);
+  z-index: 1000;
+}
+.gallery-content {
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;

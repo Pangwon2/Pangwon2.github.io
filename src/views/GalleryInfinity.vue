@@ -40,8 +40,8 @@
         </select>
         </div>
     </div>
-    <div class="gallery">
-        <div v-for="(item, a) in filteredData" :key="a">
+    <div class="gallery" ref="scrollcheck">
+        <div v-for="(item, a) in filteredData.slice(0, visibleIdx)" :key="a">
             <img :src="item.postImage" alt="Gallery Image" class="image-item" @click="goToDetail(a)"/>
             <h4>{{ item.filter }}</h4>
             <h4>{{ item.color }}</h4>
@@ -65,6 +65,7 @@ import gallerydata from '@/assets/gallerydata';
                 selectedColor: '', // 선택된 색상
                 selectedPrice: '', // 선택된 가격대
                 sort: '',
+                visibleIdx: 5,
             };
         },
         computed: {
@@ -95,7 +96,27 @@ import gallerydata from '@/assets/gallerydata';
                 console.log(id);
                 this.$router.push(`/gallery/detail/${id}`)
             },
+            handleScroll() {
+                if (this.$refs.scrollcheck.scrollHeight - (window.innerHeight + window.scrollY) < 1000){
+                    this.visibleIdx += 5 
+                }
+            },
         },
+        created() {
+            console.log("created");
+            window.addEventListener("scroll", this.handleScroll);
+        },
+        beforeRouteLeave(to, from, next) {
+            console.log("제거됨");
+            // 라우트를 떠날 때 스크롤 이벤트 리스너를 제거합니다.
+            window.removeEventListener("scroll", this.handleScroll);
+            next(); // 라우팅을 계속 진행
+        },
+        //라우터로 이동시 안됨
+        // beforeDestroy() {
+        //     console.log("destroyed");
+        //     window.removeEventListener('scroll', this.handleScroll);
+        // },
     };
 
 </script>
@@ -110,8 +131,8 @@ import gallerydata from '@/assets/gallerydata';
 }
 
 .image-item {
-  width: 200px;
-  height: 200px;
+  width: 1000px;
+  height: 1000px;
   overflow: hidden;
   border: 1px solid #ccc;
 }

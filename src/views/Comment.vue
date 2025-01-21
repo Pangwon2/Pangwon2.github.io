@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, a) in paginatedComments" :key="a" @click="goToDetail(item, a)">
+                    <tr v-for="(item, a) in paginatedComments" :key="a" @click="goToDetail(a)">
                         <td>{{ a + 1 + (currentPage - 1) * pageSize }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.name }}</td>
@@ -39,22 +39,20 @@
   </template>
   
   <script>
-  import comment from '@/assets/comment';
 
   export default {
     data(){
         return{
-            comment : comment,
             searchQuery: '',
-            filteredComment : comment,
+            filteredComment : [],
             selectedFilter: '',
             pageSize: 5,  // 한 페이지당 댓글 수
             currentPage: 1,  // 현재 페이지
         }
     },
     mounted() {
-        // 컴포넌트가 마운트되었을 때 댓글 데이터를 콘솔에 출력
-        console.log(this.comment);
+        // 컴포넌트가 마운트되었을 때 store에서 가져온 데이터를 filteredComment로 설정
+        this.filteredComment = this.comment;
     },
     computed: {
         // 페이지네이션을 위한 필터링된 댓글
@@ -67,15 +65,19 @@
         totalPages() {
             return Math.ceil(this.filteredComment.length / this.pageSize);
         },
+        comment() {
+            const comment = this.$store.getters.comment;
+            console.log(comment);
+            return comment;
+        },
     },
 
     components : {
     },
     methods: {
-        goToDetail(item, a) {
+        goToDetail(id) {
             this.$router.push({
-                path: `/comment/detail/${a}`,
-                state: { item: item }, // item을 state로 전달
+                path: `/comment/detail/${id + (this.currentPage - 1) * this.pageSize}`,
             });
         },
         goToRegister() {
@@ -156,7 +158,7 @@
     }
 
     .search {
-        margin-bottom: 10px;
+        margin-top: 10px;
         display: flex;            /* flexbox로 정렬 */
         align-items: center;      /* 아이템들을 세로로 정렬 */
     }
@@ -169,8 +171,9 @@
     }
     .filt {
         height: auto;
-        font-size: 12px;
+        font-size: 15px;
         margin-bottom: -2px;
+        margin-right: 5px;
     }
   
     .pagination {

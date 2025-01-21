@@ -162,7 +162,7 @@
     }
 
     .search {
-        margin-bottom: 10px;
+        margin-top: 10px;
         display: flex;            /* flexbox로 정렬 */
         align-items: center;      /* 아이템들을 세로로 정렬 */
         justify-content: center;
@@ -178,6 +178,7 @@
         height: auto;
         font-size: 12px;
         margin-bottom: -2px;
+        margin-right: 5px;
     }
   
     .pagination {

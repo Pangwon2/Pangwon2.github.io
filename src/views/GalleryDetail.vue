@@ -26,9 +26,8 @@
         <button class="basket" @click="showModal = true">장바구니</button>
         <button>바로구매</button>
     </div>
-    <div class="error" v-if="id > gallerydata.length">
-      <h3>게시글이 없습니다.</h3>
-    </div>
+      <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+        alt="카카오톡 공유 보내기 버튼" @click="kakaoLink()"/>
 
     <!-- 모달 -->
     <div v-if="showModal" class="modal-overlay">
@@ -81,11 +80,33 @@
         amount: this.amount,
         }
         this.$store.dispatch('product', product);
-        console.log('들어감~')
         this.showModal = false;
+        this.$router.push('/gallery');
       },
       cancelModal() {
         this.showModal = false;  // 모달 닫기
+      },
+      kakaoLink(){
+        Kakao.Link.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: 'MyodamWine',
+            description: gallerydata[this.id].filter,
+            imageUrl: gallerydata[this.id].postImage,
+            link: {
+              mobileWebUrl: '모바일도메인',
+              webUrl: '웹도메인'
+            }
+          },
+          buttons: [
+            {
+              title: 'MyodamWine',
+              link: {
+                mobileWebUrl: '모바일도메인',
+                webUrl: '웹도메인'
+              }
+            }]
+        });
       },
     },
     
