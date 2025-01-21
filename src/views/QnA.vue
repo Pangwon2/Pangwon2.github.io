@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, a) in QnA" :key="a" @click="goToDetail(QnA, a)">
+                    <tr v-for="(item, a) in paginatedQnAs" :key="a" @click="goToDetail(QnA, a)">
                         <td>{{ a }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.name }}</td>
@@ -20,6 +20,20 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="search">
+            <span>기준 :</span> &nbsp;
+            <select v-model="selectedFilter" class="filt">
+                <option value="name">이름</option>
+                <option value="title">제목</option>
+            </select>
+            <input class="searchText" v-model="searchQuery"/>
+            <button class="searchButton" @click="searchQnAs">검색</button>
+        </div>
+        <div class="pagination">
+            <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+            <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
+            <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
         </div>
         <a href="https://linktr.ee/myodamwine">
             <div class="link">
@@ -41,9 +55,26 @@
     data(){
         return{
             QnA : QnA,
+            searchQuery: '',
+            filteredQnA : QnA,
+            selectedFilter: '',
+            pageSize: 2,  // 한 페이지당 댓글 수
+            currentPage: 1,  // 현재 페이지
         }
     },
     components : {
+    },
+    computed : {
+        // 페이지네이션을 위한 필터링된 댓글
+        paginatedQnAs() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.filteredQnA.slice(start, end);
+        },
+        // 총 페이지 수
+        totalPages() {
+            return Math.ceil(this.filteredQnA.length / this.pageSize);
+        },
     },
     methods: {
         goToDetail(QnA, a) {
@@ -55,6 +86,27 @@
         },
         goToRegister() {
             this.$router.push('/registerQ');
+        },
+        searchQnAs() {
+            const searchTerm = this.searchQuery.toLowerCase();
+            if (this.selectedFilter === 'name') {
+                this.filteredQnA = this.QnA.filter(co => 
+                    co.name.toLowerCase().includes(searchTerm));
+            } else if(this.selectedFilter === 'title') {
+                this.filteredQnA = this.QnA.filter(co => 
+                    co.title.toLowerCase().includes(searchTerm));
+            }
+            this.currentPage = 1;  // 검색 후 첫 페이지로 리셋
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
         },
     },
   }
@@ -100,7 +152,7 @@
     }
 
     .register {
-        align-self: flex-end;     /* 버튼을 오른쪽 끝으로 정렬 */
+        margin-left: auto;      /* 버튼을 오른쪽 끝으로 정렬 */
         margin-bottom: 10px;
     }
 
@@ -108,5 +160,45 @@
         text-align : right;
         margin-top: 20px;
     }
+
+    .search {
+        margin-bottom: 10px;
+        display: flex;            /* flexbox로 정렬 */
+        align-items: center;      /* 아이템들을 세로로 정렬 */
+        justify-content: center;
+    }
+
+    .searchText {
+        height: 20px;             /* 입력창 높이 설정 */
+    }
+    .finding {
+        height: 20px;
+    }
+    .filt {
+        height: auto;
+        font-size: 12px;
+        margin-bottom: -2px;
+    }
+  
+    .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    margin: 0 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
   
   </style>

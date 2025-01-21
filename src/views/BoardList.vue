@@ -14,8 +14,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, a) in postdata" :key="a" @click="goToDetail(item, a)">
-                        <td>{{ a }}</td>
+                    <tr v-for="(item, a) in filteredPosts" :key="a" @click="goToDetail(item, a)">
+                        <td>{{ a + 1 }}</td>
                         <td>{{ item.filter }}</td>
                         <td>{{ item.color }}</td>
                         <td>{{ item.name }}</td>
@@ -24,6 +24,11 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="search">
+            <span>성함 :</span> &nbsp;
+            <input v-model="searchQuery" placeholder="성함을 입력하세요" class="search text"/>
+            <button class="finding" @click="searchPosts">검색</button>
         </div>
     </div>
   </template>
@@ -35,6 +40,8 @@
     data(){
         return{
             postdata : postdata,
+            searchQuery: '', // 검색어
+            filteredPosts: postdata,
         }
     },
     computed: {
@@ -42,7 +49,8 @@
         isAdmin() {
             console.log(this.$store.getters.isAdmin);
             return this.$store.getters.isAdmin;
-        }
+        },
+        
     },
     components : {
     },
@@ -56,11 +64,18 @@
         goToRegisterA() {
             this.$router.push('/registerA');
         },
+        searchPosts() {
+            // 검색어로 필터링된 게시글을 filteredPosts에 저장
+            const searchTerm = this.searchQuery.toLowerCase();
+            this.filteredPosts = this.postdata.filter(post => 
+                post.name.toLowerCase().includes(searchTerm)
+            );
+        }
     },
   }
   </script>
   
-  <style>
+  <style scoped>
     .list {
         max-width: 1200px; /* 최대 너비 지정 */
         margin: 0 auto; /* 수평 중앙 정렬 */
@@ -98,9 +113,21 @@
     .listWrap {
         flex-grow: 1;             /* 이 영역이 나머지 공간을 차지하도록 설정 */
     }
+    .search {
+        margin-top: 10px;
+        display: flex;            /* flexbox로 정렬 */
+        align-items: center;      /* 아이템들을 세로로 정렬 */
+    }
+
+    .text {
+        height: 20px;             /* 입력창 높이 설정 */
+    }
+    .finding {
+        height: 20px;
+    }
 
     .registerA {
-        align-self: flex-end;     /* 버튼을 오른쪽 끝으로 정렬 */
+        margin-left: auto;     /* 버튼을 오른쪽 끝으로 정렬 */
         margin-bottom: 10px;          /* 버튼과 테이블 사이에 간격 추가 */
     }
   

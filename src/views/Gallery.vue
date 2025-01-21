@@ -32,6 +32,12 @@
             <option value="medium">중간</option>
             <option value="high">고가</option>
         </select>
+        <label for="sort">정렬:</label>
+        <select id="sort" v-model="sort">
+            <option value="">최신순</option>
+            <option value="price">가격순</option>
+            <option value="likes">좋아요순</option>
+        </select>
         </div>
     </div>
     <div class="gallery">
@@ -40,6 +46,7 @@
             <h4>{{ item.filter }}</h4>
             <h4>{{ item.color }}</h4>
             <h4>{{ item.price }}원</h4>
+            <h4>{{ item.likes }}</h4>
         </div>
     </div>
 
@@ -57,11 +64,13 @@ import gallerydata from '@/assets/gallerydata';
                 selectedFilter: '', // 선택된 필터
                 selectedColor: '', // 선택된 색상
                 selectedPrice: '', // 선택된 가격대
+                sort: '',
             };
         },
         computed: {
             filteredData() {
-            return this.gallerydata.filter(item => {
+                //필터링
+                let filtered = this.gallerydata.filter(item => {
                 const matchesFilter = this.selectedFilter ? item.filter === this.selectedFilter : true;
                 const matchesColor = this.selectedColor ? item.color === this.selectedColor : true;
                 const matchesPrice = 
@@ -71,7 +80,14 @@ import gallerydata from '@/assets/gallerydata';
                 : true;
 
                 return matchesFilter && matchesColor && matchesPrice;
-            });
+                });
+                // 정렬 처리
+                if (this.sort === 'price') {
+                    filtered = filtered.sort((a, b) => b.price - a.price);
+                } else if (this.sort === 'likes') {
+                    filtered = filtered.sort((a, b) => b.likes - a.likes);
+                }
+                return filtered;
             },
         },
         methods: {
@@ -90,6 +106,7 @@ import gallerydata from '@/assets/gallerydata';
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .image-item {

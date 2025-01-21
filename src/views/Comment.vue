@@ -12,14 +12,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, a) in comment" :key="a" @click="goToDetail(item, a)">
-                        <td>{{ a }}</td>
+                    <tr v-for="(item, a) in paginatedComments" :key="a" @click="goToDetail(item, a)">
+                        <td>{{ a + 1 + (currentPage - 1) * pageSize }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.date }}</td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="search">
+            <span>기준 :</span> &nbsp;
+            <select v-model="selectedFilter" class="filt">
+                <option value="name">이름</option>
+                <option value="title">제목</option>
+            </select>
+            <input class="searchText" v-model="searchQuery"/>
+            <button class="searchButton" @click="searchComments">검색</button>
+        </div>
+        <div class="pagination">
+            <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+            <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
+            <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
         </div>
     </div>
   </template>
@@ -31,11 +45,28 @@
     data(){
         return{
             comment : comment,
+            searchQuery: '',
+            filteredComment : comment,
+            selectedFilter: '',
+            pageSize: 5,  // 한 페이지당 댓글 수
+            currentPage: 1,  // 현재 페이지
         }
     },
     mounted() {
         // 컴포넌트가 마운트되었을 때 댓글 데이터를 콘솔에 출력
         console.log(this.comment);
+    },
+    computed: {
+        // 페이지네이션을 위한 필터링된 댓글
+        paginatedComments() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.filteredComment.slice(start, end);
+        },
+        // 총 페이지 수
+        totalPages() {
+            return Math.ceil(this.filteredComment.length / this.pageSize);
+        },
     },
 
     components : {
@@ -50,11 +81,32 @@
         goToRegister() {
             this.$router.push('/registerC');
         },
+        searchComments() {
+            const searchTerm = this.searchQuery.toLowerCase();
+            if (this.selectedFilter === 'name') {
+                this.filteredComment = this.comment.filter(co => 
+                    co.name.toLowerCase().includes(searchTerm));
+            } else if(this.selectedFilter === 'title') {
+                this.filteredComment = this.comment.filter(co => 
+                    co.title.toLowerCase().includes(searchTerm));
+            }
+            this.currentPage = 1;  // 검색 후 첫 페이지로 리셋
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
     },
   }
   </script>
   
-  <style>
+  <style scoped>
     .list {
         max-width: 1200px; /* 최대 너비 지정 */
         margin: 0 auto; /* 수평 중앙 정렬 */
@@ -94,7 +146,7 @@
     }
 
     .register {
-        align-self: flex-end;     /* 버튼을 오른쪽 끝으로 정렬 */
+        margin-left: auto;     /* 버튼을 오른쪽 끝으로 정렬 */
         margin-bottom: 10px;
     }
 
@@ -102,5 +154,43 @@
         text-align : right;
         margin-top: 20px;
     }
+
+    .search {
+        margin-bottom: 10px;
+        display: flex;            /* flexbox로 정렬 */
+        align-items: center;      /* 아이템들을 세로로 정렬 */
+    }
+
+    .searchText {
+        height: 20px;             /* 입력창 높이 설정 */
+    }
+    .finding {
+        height: 20px;
+    }
+    .filt {
+        height: auto;
+        font-size: 12px;
+        margin-bottom: -2px;
+    }
   
+    .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    margin: 0 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
   </style>

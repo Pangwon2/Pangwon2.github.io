@@ -3,7 +3,7 @@
     <button class="return" @click="reTurn()">이전</button>
   <br>
     <div class="comment" :key="id">
-        <h3>{{ comment[id].filter }}</h3>
+        <h3>{{ comment[id].filter }} | {{ comment[id].color }}</h3>
         <h3>{{  comment[id].name  }} | {{  comment[id].date  }}</h3>
         <h3>{{ comment[id].title }}</h3>
         <img :src="comment[id].postImage" class="product">
