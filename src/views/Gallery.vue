@@ -39,7 +39,7 @@
             <option value="likes">좋아요순</option>
         </select>
         </div>
-        <button class="showChart">차트보기</button>
+        <button class="chart" @click="showSlide">차트보기</button>
     </div>
     <div class="gallery">
         <div v-for="(item, a) in filteredData" :key="a">
@@ -50,13 +50,35 @@
             <h4>{{ item.likes }}</h4>
         </div>
     </div>
-
+    <!-- 슬라이드 패널 -->
+    <div class="slide-panel" :class="{ active: showChart }">
+      <button class="close-btn" @click="showSlide">닫기</button>
+      <!-- Chart 컴포넌트 포함 -->
+      <priceRange :filteredData="filteredData" />
+      <br>
+      <br>
+      <br>
+      <filterPrice :filteredData="filteredData" />
+      <br>
+      <br>
+      <br>
+      <ColorLikes :filteredData="filteredData" />
+    </div>
 </template>
 
 <script>
 import gallerydata from '@/assets/gallerydata';
+import priceRange from '@/components/charts/priceRange.vue';
+import filterPrice from '@/components/charts/filterPrice.vue';
+import ColorLikes from '@/components/charts/colorLikes.vue';
 
     export default {
+        name: "Gallery",
+        components: {
+            priceRange,
+            filterPrice,
+            ColorLikes,
+        },
         data() {
             return {
                 // 모든 .jpg 파일 경로를 가져오는 require.context
@@ -66,6 +88,7 @@ import gallerydata from '@/assets/gallerydata';
                 selectedColor: '', // 선택된 색상
                 selectedPrice: '', // 선택된 가격대
                 sort: '',
+                showChart: false,
             };
         },
         computed: {
@@ -95,6 +118,9 @@ import gallerydata from '@/assets/gallerydata';
             goToDetail(id) {
                 console.log(id);
                 this.$router.push(`/gallery/detail/${id}`)
+            },
+            showSlide() {
+                this.showChart = !this.showChart;
             },
         },
     };
@@ -136,5 +162,31 @@ label {
 select {
   padding: 5px;
   margin-right: 20px;
+}
+
+/* 슬라이드 패널 스타일 */
+.slide-panel {
+  position: fixed;
+  top: 0;
+  right: -650px; /* 초기 위치 */
+  width: 650px;
+  height: 100%;
+  background: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.slide-panel.active {
+  right: 0; /* 활성화 시 화면 안으로 이동 */
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
 </style>

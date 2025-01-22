@@ -1,6 +1,6 @@
 export default [
   {
-    price: 132000,
+    price: 32000,
     postImage: require('../assets/myodam.jpg'),
     likes: 95,
     liked: false,
@@ -36,7 +36,7 @@ export default [
     color: "red"
   },
   {
-    price: 60000,
+    price: 20000,
     postImage: require('../assets/myodam3.jpg'),
     likes: 50,
     liked: false,
@@ -63,7 +63,7 @@ export default [
     color: "yellow"
   },
   {
-    price: 95000,
+    price: 195000,
     postImage: require('../assets/sample_images_02.png'),
     likes: 92,
     liked: false,
@@ -99,7 +99,7 @@ export default [
     color: "green"
   },
   {
-    price: 125000,
+    price: 25000,
     postImage: require('../assets/sample_images_06.png'),
     likes: 110,
     liked: false,
@@ -135,7 +135,7 @@ export default [
     color: "yellow"
   },
   {
-    price: 130000,
+    price: 180000,
     postImage: require('../assets/sample_images_10.png'),
     likes: 104,
     liked: false,
@@ -180,7 +180,7 @@ export default [
     color: "blue"
   },
   {
-    price: 84000,
+    price: 34000,
     postImage: require('../assets/sample_images_07.png'),
     likes: 89,
     liked: false,
