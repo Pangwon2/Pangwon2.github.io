@@ -106,7 +106,14 @@ export default {
 
       svg.append('g').attr('class', 'y-axis').call(d3.axisLeft(y));
     },
+    // 차트를 업데이트하는 메서드
+    updateChart(filteredData) {
+      // 차트를 비우고 새로 그리는 방식
+      d3.select(this.$refs.chart).selectAll("*").remove();  // 기존 차트 지우기
+      this.createChart(filteredData); // 새로운 filteredData로 차트 그리기
+    },
   },
+  
 };
 </script>
 

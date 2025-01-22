@@ -53,37 +53,18 @@
     <!-- 슬라이드 패널 -->
     <div class="slide-panel" :class="{ active: showChart }">
       <button class="close-btn" @click="showSlide">닫기</button>
-      <!-- Chart 컴포넌트 포함 -->
-      <priceRange :filteredData="filteredData" />
-      <br>
-      <br>
-      <br>
-      <filterPrice :filteredData="filteredData" />
-      <br>
-      <br>
-      <br>
-      <ColorLikes :filteredData="filteredData" />
-      <br>
-      <br>
-      <br>
-      <PriceLikes :filteredData="filteredData" />
+      <Charts :filteredData="filteredData" />
     </div>
 </template>
 
 <script>
 import gallerydata from '@/assets/gallerydata';
-import priceRange from '@/components/charts/priceRange.vue';
-import filterPrice from '@/components/charts/filterPrice.vue';
-import ColorLikes from '@/components/charts/colorLikes.vue';
-import PriceLikes from '@/components/charts/priceLikes.vue';
+import Charts from '@/components/Charts.vue';
 
     export default {
         name: "Gallery",
         components: {
-            priceRange,
-            filterPrice,
-            ColorLikes,
-            PriceLikes,
+            Charts,
         },
         data() {
             return {
