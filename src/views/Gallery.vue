@@ -63,6 +63,10 @@
       <br>
       <br>
       <ColorLikes :filteredData="filteredData" />
+      <br>
+      <br>
+      <br>
+      <PriceLikes :filteredData="filteredData" />
     </div>
 </template>
 
@@ -71,6 +75,7 @@ import gallerydata from '@/assets/gallerydata';
 import priceRange from '@/components/charts/priceRange.vue';
 import filterPrice from '@/components/charts/filterPrice.vue';
 import ColorLikes from '@/components/charts/colorLikes.vue';
+import PriceLikes from '@/components/charts/priceLikes.vue';
 
     export default {
         name: "Gallery",
@@ -78,6 +83,7 @@ import ColorLikes from '@/components/charts/colorLikes.vue';
             priceRange,
             filterPrice,
             ColorLikes,
+            PriceLikes,
         },
         data() {
             return {
@@ -176,6 +182,7 @@ select {
   transition: right 0.3s ease;
   z-index: 1000;
   padding: 20px;
+  overflow-y: auto; /* 세로 스크롤 추가 */
 }
 
 .slide-panel.active {
