@@ -39,6 +39,7 @@
             <option value="likes">좋아요순</option>
         </select>
         </div>
+        <button class="showChart">차트보기</button>
     </div>
     <div class="gallery">
         <div v-for="(item, a) in filteredData" :key="a">
