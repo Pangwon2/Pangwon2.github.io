@@ -43,7 +43,7 @@
     </div>
     <div class="gallery">
         <div v-for="(item, a) in filteredData" :key="a">
-            <img :src="'data:image/jpeg;base64,' + item.postImagePath" alt="Gallery Image" class="image-item" @click="goToDetail(a)"/>
+            <img :src="item.postImage" alt="Gallery Image" class="image-item" @click="goToDetail(a)"/>
             <h4>{{ item.filter }}</h4>
             <h4>{{ item.color }}</h4>
             <h4>{{ item.price }}원</h4>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import gallerydata from '@/assets/gallerydata';
 import Charts from '@/components/Charts.vue';
 
     export default {
@@ -69,22 +69,19 @@ import Charts from '@/components/Charts.vue';
         data() {
             return {
                 // 모든 .jpg 파일 경로를 가져오는 require.context
+                gallerydata: gallerydata,
                 id: this.a,
                 selectedFilter: '', // 선택된 필터
                 selectedColor: '', // 선택된 색상
                 selectedPrice: '', // 선택된 가격대
                 sort: '',
                 showChart: false,
-                products: [],
             };
-        },
-        created() {
-            this.fetchProducts();
         },
         computed: {
             filteredData() {
                 //필터링
-                let filtered = this.products.filter(item => {
+                let filtered = this.gallerydata.filter(item => {
                 const matchesFilter = this.selectedFilter ? item.filter === this.selectedFilter : true;
                 const matchesColor = this.selectedColor ? item.color === this.selectedColor : true;
                 const matchesPrice = 
@@ -111,27 +108,6 @@ import Charts from '@/components/Charts.vue';
             },
             showSlide() {
                 this.showChart = !this.showChart;
-            },
-            fetchProducts() {
-                axios.get('http://localhost:8080/all')
-                    .then(response => {
-                        // 이미지를 Base64로 변환하여 이미지 데이터가 포함된 제품 정보를 저장
-                        this.products = response.data.map(product => {
-                            console.log(product);
-                            if (product.postImage) {
-                                product.postImage = this.convertToBase64(product.postImage);
-                            }
-                            return product;
-                        });
-                    })
-                    .catch(error => {
-                        console.error('There was an error!', error);
-                    });
-            },
-            // 이미지 데이터를 Base64로 변환하는 메서드
-            convertToBase64(imageData) {
-                // imageData가 byte[] 형식일 경우, 이를 base64로 변환
-                return btoa(String.fromCharCode(...new Uint8Array(imageData)));
             },
         },
     };
