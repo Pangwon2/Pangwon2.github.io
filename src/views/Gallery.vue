@@ -43,7 +43,7 @@
     </div>
     <div class="gallery">
         <div v-for="(item, a) in filteredData" :key="a">
-            <img :src="'data:image/jpeg;base64,' + item.postImagePath" alt="Gallery Image" class="image-item" @click="goToDetail(a)"/>
+            <img :src="'data:image/jpeg;base64,' + item.postImage" alt="Gallery Image" class="image-item" @click="goToDetail(a)"/>
             <h4>{{ item.filter }}</h4>
             <h4>{{ item.color }}</h4>
             <h4>{{ item.price }}원</h4>
@@ -115,23 +115,11 @@ import Charts from '@/components/Charts.vue';
             fetchProducts() {
                 axios.get('http://localhost:8080/all')
                     .then(response => {
-                        // 이미지를 Base64로 변환하여 이미지 데이터가 포함된 제품 정보를 저장
-                        this.products = response.data.map(product => {
-                            console.log(product);
-                            if (product.postImage) {
-                                product.postImage = this.convertToBase64(product.postImage);
-                            }
-                            return product;
-                        });
+                        this.products = response.data;
                     })
                     .catch(error => {
                         console.error('There was an error!', error);
                     });
-            },
-            // 이미지 데이터를 Base64로 변환하는 메서드
-            convertToBase64(imageData) {
-                // imageData가 byte[] 형식일 경우, 이를 base64로 변환
-                return btoa(String.fromCharCode(...new Uint8Array(imageData)));
             },
         },
     };
